@@ -18,9 +18,9 @@ the decorrelated space and its RMS is compared with the basic measurement for bo
 
 ## Results
 
-The figure below shows the coefficients in the original space of the 6th first principal components (PC), 
-the explained RMS fraction for each PC and the comparison of the final observable. The two first plots show
-that we indeed have a low freqency noise since each PC seems to be harmonic (!) and the lowest frequency 
+The figure below shows the ADC time serie, the coefficients in the original space of the 6th first principal components (PC), 
+the explained RMS fraction for each PC and the comparison of the final observable. The two plots top-right and bottom-left 
+show that we indeed have a low freqency noise since each PC seems to be harmonic (!) and the lowest frequency 
 corresponds to the higher RMS.
 
 ![OCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/PCA_rResult.png)
