@@ -27,4 +27,4 @@ the explained RMS fraction for each PC and the comparison of the final observabl
 show that we indeed have a low freqency noise since each PC seems to be harmonic (!) and the lowest frequency 
 corresponds to the higher RMS.
 
-![PCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/PCA_rResult.png)
+![PCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/Results.png)
