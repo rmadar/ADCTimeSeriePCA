@@ -123,7 +123,7 @@ plt.subplot(221)
 Ntoplot=int(1e5)
 plt.title('ADC count vs Time [{} events only]'.format(Ntoplot))
 plt.plot(adc[:Ntoplot], marker='.', linewidth=0, alpha=0.2)
-plt.xlabel('Time [$\mu$s])')
+plt.xlabel('Time [$\mu$s]')
 plt.ylabel('ADC count')
 
 plt.subplot(222)
@@ -160,7 +160,7 @@ plt.ylabel('Probability Density')
 plt.legend()
 
 plt.tight_layout()
-plt.savefig('PCA_rResult.png')
+plt.savefig('Results.png')
 t5 = default_timer()
 print '   * Results done in {:.2f}s'.format( t5-t4 )
 
