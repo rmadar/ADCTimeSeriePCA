@@ -1,4 +1,5 @@
 import numpy             as np
+import pandas            as pd
 import matplotlib        as mpl
 import matplotlib.pyplot as plt
 from   sklearn           import decomposition
@@ -41,41 +42,18 @@ mpl.rcParams['patch.linewidth' ] = 2.5
 # 1. Shape the time serie into N points
 #    of Ndim-dimension vector
 #--------------------------------------
-Nmax=10000000000
 Ndim=1000
 fTrain=0.5
 
 def getRawData(whiteNoise=False):
-
-    n=0
-    sig_array=[]
-    point_array=[]
-    idata=0
-    infile = open('data.txt')
     
-    for line in infile:
-        
-        clean_line = line.replace('\n','')
-        data_tab   = clean_line.split(',')
-        if (whiteNoise):
-            adc = np.random.randint(450,500)
-        else:
-            adc = float(data_tab[0])
-        
-        if (n<Ndim):
-            point_array.append(adc)
-            n=n+1
-        if (n==Ndim):
-            sig_array.append(point_array)
-            n=0
-            point_array=[]
-
-        idata=idata+1
-        if (idata>Nmax-1):
-            break
+    df      = pd.read_csv('data.txt', names=['ADC'])  # Using pandas is 10 times faster than an explicit file reading 
+    adc_raw = np.array( df['ADC'] )                   # Get array containing 9 millions values
+    N_Ndim  = int( adc_raw.shape[0]/Ndim )            # Compute number of N Ndim-multiplet
+    adc_raw = adc_raw[:Ndim*N_Ndim]                   # Keep only the first N*Ndim values (since Nrest<Ndim)
+    data    = np.reshape(adc_raw, (N_Ndim,Ndim) )     # Reshape to arrange values in a N rows of Ndim columns
+    return data
     
-    return np.asarray(sig_array)
-
 
 # For timing the different steps
 t0 = default_timer()
@@ -90,7 +68,7 @@ data_0   = data_raw - np.mean(data_raw)
 pca      = decomposition.PCA(n_components=Ndim)
 data_dim = data_raw.shape
 t1 = default_timer()
-print '   * done in {:.2f}s: {:.2e} events of {}-dimension multiplet\n'.format( t1-t0 ,data_dim[0] , data_dim[1] )
+print '   * done in {:.2f}s: {} events of {}-dimension multiplet\n'.format( t1-t0 ,data_dim[0] , data_dim[1] )
 
 
 #---------------------------------------
@@ -155,7 +133,7 @@ plt.ylabel('$\sigma_{j} / \sigma_{tot}$')
 
 plt.subplot(133)
 plt.title('Sample Distribution')
-bins = np.linspace(450,650,200)
+bins = np.linspace(450,670,220)
 plt.hist(mean_initial    , bins, color='b' , histtype='step', alpha=0.6, label='Raw Samples'   )
 plt.hist(mean_decor_train, bins, color='g' , histtype='step', alpha=0.6, label='PCA [training]')
 plt.hist(mean_decor      , bins, color='r' , histtype='step', alpha=0.6, label='PCA [testing]' )
@@ -165,6 +143,7 @@ plt.legend()
 
 
 plt.tight_layout()
+plt.savefig('PCA_rResult.png')
 plt.show()
-plt.savefig('PCA_rResult.pdf')
+
 
