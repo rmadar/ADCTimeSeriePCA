@@ -24,18 +24,18 @@ from   timeit            import default_timer
 #-----------------
 # 0. Plot settings
 #-----------------
-mpl.rcParams['figure.facecolor'] = 'w'
-mpl.rcParams['legend.frameon'  ] = False
-mpl.rcParams['legend.fontsize' ] = 'x-large'
-mpl.rcParams['legend.loc'      ] = 'best'
-mpl.rcParams['xtick.labelsize' ] = 16
-mpl.rcParams['ytick.labelsize' ] = 16
-mpl.rcParams['axes.titlesize'  ] = 18
-mpl.rcParams['axes.labelsize'  ] = 18
-mpl.rcParams['lines.linewidth' ] = 2.5
-mpl.rcParams['patch.edgecolor' ] = 'none'
-mpl.rcParams['patch.linewidth' ] = 2.5
-
+mpl.rcParams['figure.facecolor'  ] = 'w'
+mpl.rcParams['legend.frameon'    ] = False
+mpl.rcParams['legend.fontsize'   ] = 'x-large'
+mpl.rcParams['legend.loc'        ] = 'best'
+mpl.rcParams['xtick.labelsize'   ] = 16
+mpl.rcParams['ytick.labelsize'   ] = 16
+mpl.rcParams['axes.titlesize'    ] = 18
+mpl.rcParams['axes.labelsize'    ] = 18
+mpl.rcParams['lines.linewidth'   ] = 2.5
+mpl.rcParams['patch.edgecolor'   ] = 'none'
+mpl.rcParams['patch.linewidth'   ] = 2.5
+mpl.rcParams['agg.path.chunksize'] = 10000
 
 
 #--------------------------------------
@@ -52,7 +52,7 @@ def getRawData(whiteNoise=False):
     N_Ndim  = int( adc_raw.shape[0]/Ndim )            # Compute number of N Ndim-multiplet
     adc_raw = adc_raw[:Ndim*N_Ndim]                   # Keep only the first N*Ndim values (since Nrest<Ndim)
     data    = np.reshape(adc_raw, (N_Ndim,Ndim) )     # Reshape to arrange values in a N rows of Ndim columns
-    return data
+    return adc_raw, data
     
 
 # For timing the different steps
@@ -63,10 +63,10 @@ t0 = default_timer()
 # 2. Get the data and initizalize the PCA tool
 #---------------------------------------------
 print '\n--> Data being loaded ...'
-data_raw = getRawData()
-data_0   = data_raw - np.mean(data_raw)
-pca      = decomposition.PCA(n_components=Ndim)
-data_dim = data_raw.shape
+adc,data_raw = getRawData()
+data_0       = data_raw - np.mean(data_raw)
+pca          = decomposition.PCA(n_components=Ndim)
+data_dim     = data_raw.shape
 t1 = default_timer()
 print '   * done in {:.2f}s: {} events of {}-dimension multiplet\n'.format( t1-t0 ,data_dim[0] , data_dim[1] )
 
@@ -113,9 +113,16 @@ mean_decor_train = np.mean( data_decor_train, axis=1 ) + np.mean(data_raw)
 #-------------------
 # 7. Plot everything
 #-------------------
-plt.figure(figsize=(20,7))
+plt.figure(figsize=(19,13))
 
-plt.subplot(131)
+plt.subplot(221)
+Ntoplot=int(1e5)
+plt.title('ADC count vs Time [{} events only]'.format(Ntoplot))
+plt.plot(adc[:Ntoplot], marker='.', linewidth=0, alpha=0.2)
+plt.xlabel('Time [$\mu$s])')
+plt.ylabel('ADC count')
+
+plt.subplot(222)
 plt.title('PC$ = \Sigma_{i} \: \\alpha_{i} n_{i}$')
 i=range(0,6)
 for i in range(0,6):
@@ -125,20 +132,27 @@ plt.xlabel('$i^{th}$ sample ($=$ time [$\mu$s])')
 plt.ylabel('$\\alpha_i$')
 plt.legend()
 
-plt.subplot(132)
+plt.subplot(223)
 plt.title('Explained Variance Ratio')
 plt.loglog( pca.explained_variance_ratio_ )
 plt.xlabel('$j^{th}$ principal component')
 plt.ylabel('$\sigma_{j} / \sigma_{tot}$')
 
-plt.subplot(133)
+plt.subplot(224)
 plt.title('Sample Distribution')
-bins = np.linspace(450,670,220)
-plt.hist(mean_initial    , bins, color='b' , histtype='step', alpha=0.6, label='Raw Samples'   )
-plt.hist(mean_decor_train, bins, color='g' , histtype='step', alpha=0.6, label='PCA [training]')
-plt.hist(mean_decor      , bins, color='r' , histtype='step', alpha=0.6, label='PCA [testing]' )
-plt.xlabel('Mean of {:2d} samples'.format(Ndim))
-plt.ylabel('Entry')
+bins = np.linspace(450,650,300)
+plt.hist(adc         , bins, color='orange', histtype='step', normed=True, \
+         alpha=0.8, label='$1$ sample RMS={:.1f}'.format(adc.std()) )
+plt.hist(mean_initial, bins, color='blue'  , histtype='step', normed=True, \
+         alpha=0.6, label='$10^{3}$ samples RMS='+'{:.1f}'.format(mean_initial.std()) )
+plt.hist(mean_decor_train, bins, color='green' , histtype='step', normed=True, \
+         alpha=0.6, label='PCA [training] RMS={:.1f}'.format(mean_decor_train.std())  )
+plt.hist(mean_decor, bins, color='red'   , histtype='step', normed=True, \
+         alpha=0.6, label='PCA [testing] RMS={:.1f}'.format(mean_decor.std() )   )
+plt.ylim(1e-3,20)
+plt.semilogy()
+plt.xlabel('Mean of samples')
+plt.ylabel('Probability Density')
 plt.legend()
 
 
