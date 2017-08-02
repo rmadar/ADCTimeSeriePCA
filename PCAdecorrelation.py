@@ -74,10 +74,8 @@ print '   * done in {:.2f}s: {} events of {}-dimension multiplet\n'.format( t1-t
 # 3. Define training and testing samples
 #---------------------------------------
 print '--> Data sample is splitted into training ({:2.0f}%) and testing ({:2.0f}%) samples ...'.format( fTrain*100, (1-fTrain)*100 )
-data_raw_training = data_raw[:int((len(data_raw)+1)*fTrain)]
-data_raw_testing  = data_raw[int(len(data_raw)*fTrain+1):]
-data_0_training   = data_0  [:int((len(data_0)+1)*fTrain)]
-data_0_testing    = data_0  [int(len(data_0)*fTrain+1):]
+data_0_training = data_0  [:int((len(data_0)+1)*fTrain)]
+data_0_testing  = data_0  [int(len(data_0)*fTrain+1):]
 t2 = default_timer()
 print '   * done in {:.2f}s\n'.format( t2-t1 )
 
@@ -104,7 +102,6 @@ data_decor       = pca.transform(data_0_testing)
 #-------------------------------------
 # 6. Define your variables of interest
 #-------------------------------------
-
 dm=np.mean(data_raw)
 mean_initial     = np.mean( data_raw        , axis=1 )
 mean_decor       = np.mean( data_decor      , axis=1 ) + dm
