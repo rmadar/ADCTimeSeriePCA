@@ -45,8 +45,7 @@ mpl.rcParams['agg.path.chunksize'] = 10000
 Ndim=1000
 fTrain=0.5
 
-def getRawData(whiteNoise=False):
-    
+def getRawData(whiteNoise=False):    
     df      = pd.read_csv('data.txt', names=['ADC'])  # Using pandas is 10 times faster than an explicit file reading 
     adc_raw = np.array( df['ADC'] )                   # Get array containing 9 millions values
     N_Ndim  = int( adc_raw.shape[0]/Ndim )            # Compute number of N Ndim-multiplet
@@ -83,7 +82,6 @@ t2 = default_timer()
 print '   * done in {:.2f}s\n'.format( t2-t1 )
 
 
-
 #-----------------
 # 4. Fit the model
 #-----------------
@@ -96,6 +94,7 @@ print '   * done in {:.2f}s\n'.format( t3-t2 )
 #--------------------------------------------------------------
 # 5. Use the model, ie work in initial and decorrelated spaces
 #--------------------------------------------------------------
+print '--> Decorrelate variable and averaged values ...'
 data_decor_train = pca.transform(data_0_training)
 data_decor       = pca.transform(data_0_testing)
 # Inverse transformation:
@@ -105,14 +104,19 @@ data_decor       = pca.transform(data_0_testing)
 #-------------------------------------
 # 6. Define your variables of interest
 #-------------------------------------
+
+dm=np.mean(data_raw)
 mean_initial     = np.mean( data_raw        , axis=1 )
-mean_decor       = np.mean( data_decor      , axis=1 ) + np.mean(data_raw)
-mean_decor_train = np.mean( data_decor_train, axis=1 ) + np.mean(data_raw)
+mean_decor       = np.mean( data_decor      , axis=1 ) + dm
+mean_decor_train = np.mean( data_decor_train, axis=1 ) + dm
+t4 = default_timer()
+print '   * done in {:.2f}s\n'.format( t4-t3 )
 
+#----------------
+# 7. Plot results
+#----------------
+print '--> Plots are being made ...'
 
-#-------------------
-# 7. Plot everything
-#-------------------
 plt.figure(figsize=(19,13))
 
 plt.subplot(221)
@@ -155,9 +159,55 @@ plt.xlabel('Mean of samples')
 plt.ylabel('Probability Density')
 plt.legend()
 
-
 plt.tight_layout()
 plt.savefig('PCA_rResult.png')
+t5 = default_timer()
+print '   * Results done in {:.2f}s'.format( t5-t4 )
+
+
+#---------------------
+# 7. Plot correlations
+#---------------------
+plt.figure(figsize=(19,13))
+
+plt.subplot(221)
+plt.title('Correlation Matrix: before')
+plt.xlabel('$j^{th} $sample')
+plt.ylabel('$i^{th} $sample')
+plt.imshow(np.corrcoef(data_raw.T), interpolation='none', aspect='auto', cmap='seismic', origin='lower', vmin=-1, vmax=1)
+plt.colorbar()
+
+plt.subplot(222)
+plt.title('Correlation Matrix: after')
+plt.xlabel('$j^{th} $sample')
+plt.ylabel('$i^{th} $sample')
+plt.imshow(np.corrcoef(data_decor.T), interpolation='none', aspect='auto', cmap='seismic', origin='lower', vmin=-1, vmax=1)
+plt.colorbar()
+
+plt.subplot(223)
+d1=data_raw[:,50]-data_raw[:,50].mean(); d2=data_raw[:,100]-data_raw[:,100].mean()
+plt.title('Scatter plot: before')
+plt.xlabel('$50^{th}$ sample')
+plt.ylabel('$100^{th}$ sample')
+plt.scatter(d1, d2 , alpha=0.2, marker='.')
+plt.xlim(-150,150)
+plt.ylim(-150,150)
+
+plt.subplot(224)
+de1=data_decor[:,50]; de2=data_decor[:,100]
+plt.title('Scatter plot: after')
+plt.xlabel('$50^{th}$ PC')
+plt.ylabel('$100^{th}$ PC')
+plt.scatter(de1, de2, alpha=0.2, marker='.')
+plt.xlim(-150,150)
+plt.ylim(-150,150)
+
+plt.tight_layout()
+plt.savefig('Correlations.png')
+t6 = default_timer()
+print '   * Correlations done in {:.2f}s\n'.format( t6-t5 )
+
+# Show all plots
 plt.show()
 
 
