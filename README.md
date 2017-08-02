@@ -11,7 +11,7 @@ expected precision gain in case of uncorrelated variables.
 
 ## Algorithm application
 
-The code analyzes time serie of 9 millions ADC counts and group the values in arrays of Ndim. This sample
+The code analyzes time serie of 9 millions ADC counts and group the values in arrays of Ndim=1000. This sample
 of 9000 observations is split into two, one being used for the auto-correlation matrix and the other to
 test the decorrelation process. The PCA is then performed on 4500 Ndim vectors. Finally, the averaged is computed in 
 the decorrelated space and its RMS is compared with the basic measurement for both training and testing samples.
