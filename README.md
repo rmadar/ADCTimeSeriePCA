@@ -1,4 +1,4 @@
-# Princpal Component Analysis on ADC time serie
+# Principal Component Analysis on ADC time serie
 
 This code proposes to try to reduce correlation at large time, consequence of low frequency noise (known as flicker 
 noise in electronics) using principal component analysis (PCA). 
@@ -17,7 +17,7 @@ test the decorrelation process. The PCA is then performed on 4500 Ndim vectors. 
 the decorrelated space and its RMS is compared with the basic measurement for both training and testing samples.
 
 ## Results
-The figure belows shows the correlation before PCA and after, as well as a scatter plot between first and fiftyth variables
+The figure below shows the correlation before PCA and after, as well as a scatter plot between first and fiftyth variables
 (ADC values before and PC after transformation).
 
 ![PCA decorrelation](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/Correlations.png)
