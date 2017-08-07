@@ -55,8 +55,8 @@ user	1m11.430s
 sys	0m0.270s
 ```
 
-![Go PCA decorrelation](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-orrelations.png)
-![Go PCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-esults.png)
+![Go PCA decorrelation](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-correlations.png)
+![Go PCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-results.png)
 
 
 
