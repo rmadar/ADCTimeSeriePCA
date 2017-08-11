@@ -8,19 +8,19 @@ import (
 	"strconv"
 	"time"
 
-	"golang.org/x/sync/errgroup"
-
-	"github.com/gonum/floats"
-	"github.com/gonum/plot"
-	"github.com/gonum/plot/plotter"
-	"github.com/gonum/plot/plotutil"
-	"github.com/gonum/plot/vg"
-	"github.com/gonum/plot/vg/draw"
 	"go-hep.org/x/hep/hbook"
 	"go-hep.org/x/hep/hplot"
 
+	"golang.org/x/sync/errgroup"
+
+	"gonum.org/v1/gonum/floats"
 	"gonum.org/v1/gonum/mat"
 	"gonum.org/v1/gonum/stat"
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/plotutil"
+	"gonum.org/v1/plot/vg"
+	"gonum.org/v1/plot/vg/draw"
 )
 
 const (
