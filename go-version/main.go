@@ -107,10 +107,7 @@ func main() {
 
 	log.Printf("creating plots...")
 	t5 := time.Now()
-	tp, err := hplot.NewTiledPlot(draw.Tiles{Cols: 2, Rows: 2})
-	if err != nil {
-		log.Fatal(err)
-	}
+	tp := hplot.NewTiledPlot(draw.Tiles{Cols: 2, Rows: 2})
 
 	var grp errgroup.Group
 	grp.Go(func() error {
@@ -208,10 +205,7 @@ func main() {
 			}
 			h.Scale(1 / h.Integral())
 
-			hh, err := hplot.NewH1D(h)
-			if err != nil {
-				log.Fatal(err)
-			}
+			hh := hplot.NewH1D(h)
 			hh.Color = colors[i]
 			hh.FillColor = nil
 			p.Add(hh)
@@ -233,10 +227,7 @@ func main() {
 
 	t6 := time.Now()
 	log.Printf("creating correlation plots...")
-	tp, err = hplot.NewTiledPlot(draw.Tiles{Rows: 2, Cols: 2})
-	if err != nil {
-		log.Fatal(err)
-	}
+	tp = hplot.NewTiledPlot(draw.Tiles{Rows: 2, Cols: 2})
 
 	grp.Go(func() error {
 		p := tp.Plot(0, 0)
@@ -372,4 +363,8 @@ func readRawData(fname string) (*mat.Dense, error) {
 	adc = adc[:ndim*Ndim]
 	m := mat.NewDense(ndim, Ndim, adc)
 	return m, nil
+}
+
+func init() {
+	plotter.DefaultLineStyle.Width = vg.Points(2)
 }
