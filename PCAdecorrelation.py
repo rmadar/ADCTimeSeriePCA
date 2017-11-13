@@ -8,6 +8,7 @@ from   timeit            import default_timer
 
 ## ====================================================================
 ##
+##
 ## Author: Romain Madar (romain.madar@gmail.com)
 ## Date  : 01/08/17
 ##
@@ -16,6 +17,7 @@ from   timeit            import default_timer
 ## frequency correlation using PCA. The full dataset of N samples is
 ## arranged in N0 vector having each Ndim dimension on which the PCA
 ## will be performed.
+##
 ##
 ## ====================================================================
 
