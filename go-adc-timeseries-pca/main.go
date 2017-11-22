@@ -219,7 +219,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = tp.Save(-1, 20*vg.Centimeter, "go-results.png")
+	err = tp.Save(-1, 20*vg.Centimeter, "results.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -334,7 +334,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = tp.Save(-1, 20*vg.Centimeter, "go-correlations.png")
+	err = tp.Save(-1, 20*vg.Centimeter, "correlations.png")
 	if err != nil {
 		log.Fatal(err)
 	}

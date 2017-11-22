@@ -3,8 +3,8 @@
 To run, once the [Go](https://golang.org/doc/install) toolchain has been installed:
 
 ```sh
-$> go get github.com/rmadar/ADCTimeSeriePCA
-$> time $GOPATH/bin/ADCTimeSeriePCA
+$> go get github.com/rmadar/ADCTimeSeriePCA/go-adc-timeseries-pca
+$> time $GOPATH/bin/go-adc-timeseries-pca
 pca: loading data...
 pca: ==> done (1.639700776s)
 pca: 8996 events of 1000 dimension multiplet
@@ -24,8 +24,8 @@ user	1m11.430s
 sys	0m0.270s
 ```
 
-![Go PCA decorrelation](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-version/go-correlations.png)
-![Go PCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-version/go-results.png)
+![Go PCA decorrelation](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-adc-timeseries-pca/correlations.png)
+![Go PCA result](https://github.com/rmadar/ADCTimeSeriePCA/blob/master/go-adc-timeseries-pca/results.png)
 
 
 
